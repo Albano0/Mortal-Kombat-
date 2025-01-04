@@ -34,12 +34,12 @@ public class GameScreen implements Screen {
         this.game = gam;
 
         //carregamento das imagens do balde e da gota 
-        dropImage = new Texture(Gdx.files.internal("droplet.png"));
-        bucketImage = new Texture(Gdx.files.internal("bucket.png"));
+        dropImage = new Texture(Gdx.files.internal("assets//liuKang//liu_walking_01.png"));
+        bucketImage = new Texture(Gdx.files.internal("C:assets//scorpio//04.png"));
 
         //carregamento dos efeitos sonoros da chuva e dos pingos
-        dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
-        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
+        dropSound = Gdx.audio.newSound(Gdx.files.internal("mk1-00370.mp3"));
+        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("mk1-00378.mp3"));
         rainMusic.setLooping(true);
 
         //cria a camera de visão do jogador e o sprite batch
@@ -173,7 +173,6 @@ public class GameScreen implements Screen {
         bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
-    }// aqui todos os recursos usados serão descartados após 
-    // seu uso.
+    }
 
 }
