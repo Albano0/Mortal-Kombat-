@@ -38,8 +38,8 @@ public class GameScreen implements Screen {
         bucketImage = new Texture(Gdx.files.internal("C:assets//scorpio//04.png"));
 
         //carregamento dos efeitos sonoros da chuva e dos pingos
-        dropSound = Gdx.audio.newSound(Gdx.files.internal("mk1-00370.mp3"));
-        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("mk1-00378.mp3"));
+        dropSound = Gdx.audio.newSound(Gdx.files.internal("assets\\Sons\\dark-crypt-144812.mp3"));
+        rainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets\\Sons\\MusicaTema.mp3"));
         rainMusic.setLooping(true);
 
         //cria a camera de visão do jogador e o sprite batch
