@@ -1,4 +1,4 @@
-package com.java.MortalKombat;
+package com.game.MortalKombat;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
