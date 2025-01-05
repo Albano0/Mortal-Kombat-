@@ -19,7 +19,7 @@ public class GameScreen implements Screen {
     final Drop game;
     //Texture dropImage;
     Texture bucketImage;
-    Texture background = new Texture("assets//Arenas//Arena Shrine.png");
+    Texture background = new Texture("assets//Arenas//ArenaCourtyard.png");
     Sound dropSound;
     Music rainMusic;
     OrthographicCamera camera;
@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
         bucket.y = 20; //aqui defini-se a posição do balde sendo no canto inferior
         //da tela 20 pixels acima da borda.
         bucket.width = 64;
-        bucket.height = 64;
+        bucket.height = 90;
 
         //aqui é criada a matriz que irá gerar os pingos de chuva 
         /*raindrops = new Array<Rectangle>();
@@ -105,15 +105,15 @@ public class GameScreen implements Screen {
         } */
 
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-            bucket.x -= 700 * Gdx.graphics.getDeltaTime();
+            bucket.x -= 600 * Gdx.graphics.getDeltaTime();
         }
         if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-            bucket.x += 700 * Gdx.graphics.getDeltaTime();
+            bucket.x += 600 * Gdx.graphics.getDeltaTime();
         }if (Gdx.input.isKeyPressed(Keys.UP)) {
-            bucket.y += 700 * Gdx.graphics.getDeltaTime();
+            bucket.y += 600 * Gdx.graphics.getDeltaTime();
         }
         if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-            bucket.y -= 700 * Gdx.graphics.getDeltaTime();
+            bucket.y -= 600 * Gdx.graphics.getDeltaTime();
         }
 
         //aqui o programa se certifica de que o balde está 
@@ -121,8 +121,8 @@ public class GameScreen implements Screen {
         if (bucket.y < 0) {
             bucket.y = 0;
         }
-        if (bucket.y > 480-64) {
-            bucket.y = 480-64;
+        if (bucket.y > 480-90) {
+            bucket.y = 480-90;
         }
 
         if (bucket.x < 0) {
