@@ -104,15 +104,15 @@ public class GameScreen implements Screen {
         } */
 
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-            bucket.x -= 200 * Gdx.graphics.getDeltaTime();
+            bucket.x -= 700 * Gdx.graphics.getDeltaTime();
         }
         if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-            bucket.x += 200 * Gdx.graphics.getDeltaTime();
+            bucket.x += 700 * Gdx.graphics.getDeltaTime();
         }if (Gdx.input.isKeyPressed(Keys.UP)) {
-            bucket.y += 200 * Gdx.graphics.getDeltaTime();
+            bucket.y += 700 * Gdx.graphics.getDeltaTime();
         }
         if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-            bucket.y -= 200 * Gdx.graphics.getDeltaTime();
+            bucket.y -= 700 * Gdx.graphics.getDeltaTime();
         }
 
         //aqui o programa se certifica de que o balde está 
