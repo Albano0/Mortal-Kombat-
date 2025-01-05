@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 
 public class MainMenuScreen implements Screen {
 
     final Drop game;
     OrthographicCamera camera;
+    private Texture background; // Adicionada a textura da imagem de fundo
 
     public MainMenuScreen(final Drop gam) {
         game = gam;
@@ -16,21 +18,32 @@ public class MainMenuScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
+        // Carregando a imagem de fundo
+        background = new Texture("assets//Design sem nome.png"); 
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        // Limpa a tela com uma cor preta (opcional)
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Atualiza a câmera
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        // Começa o desenho
         game.batch.begin();
-        game.font.draw(game.batch, "Bem Vindo!!! ", 100, 150);
-        game.font.draw(game.batch, "Pressione com o mouse para iniciar o jogo!", 100, 100);
+
+        // Desenha a imagem de fundo
+        game.batch.draw(background, 0, 0, 800, 480); // Ajuste a posição e o tamanho da imagem
+
+        // Desenha o texto por cima da imagem de fundo
+        
+
         game.batch.end();
 
+        // Verifica se o mouse foi pressionado
         if (Gdx.input.isTouched()) {
             game.setScreen(new GameScreen(game));
             dispose();
@@ -59,5 +72,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        // Libera a textura da imagem de fundo
+        if (background != null) {
+            background.dispose();
+        }
     }
 }
