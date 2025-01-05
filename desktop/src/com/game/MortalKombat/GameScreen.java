@@ -17,7 +17,6 @@ import com.badlogic.gdx.math.Rectangle;
 public class GameScreen implements Screen {
 
     final Drop game;
-
     //Texture dropImage;
     Texture bucketImage;
     Sound dropSound;
@@ -26,7 +25,7 @@ public class GameScreen implements Screen {
     Rectangle bucket;
     //Array<Rectangle> raindrops;
     //long lastDropTime;
-    int dropsGathered;
+   //int dropsGathered;
 
     public GameScreen(final Drop gam) {
         this.game = gam;
@@ -120,9 +119,10 @@ public class GameScreen implements Screen {
         if (bucket.y < 0) {
             bucket.y = 0;
         }
-        if (bucket.y > 480-20) {
-            bucket.y = 480-20;
+        if (bucket.y > 480-64) {
+            bucket.y = 480-64;
         }
+
         if (bucket.x < 0) {
             bucket.x = 0;
         }

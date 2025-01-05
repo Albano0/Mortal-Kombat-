@@ -10,7 +10,7 @@ public class MainMenuScreen implements Screen {
 
     final Drop game;
     OrthographicCamera camera;
-    private Texture background; // Adicionada a textura da imagem de fundo
+    Texture background; // Adicionada a textura da imagem de fundo
 
     public MainMenuScreen(final Drop gam) {
         game = gam;
