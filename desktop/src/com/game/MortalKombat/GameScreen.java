@@ -1,7 +1,5 @@
 package com.game.MortalKombat;
-
-import java.util.Iterator;
-
+//import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -10,33 +8,33 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
+//import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
+//import com.badlogic.gdx.math.Vector3;
+//import com.badlogic.gdx.utils.Array;
+//import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
 
     final Drop game;
 
-    Texture dropImage;
+    //Texture dropImage;
     Texture bucketImage;
     Sound dropSound;
     Music rainMusic;
     OrthographicCamera camera;
     Rectangle bucket;
-    Array<Rectangle> raindrops;
-    long lastDropTime;
+    //Array<Rectangle> raindrops;
+    //long lastDropTime;
     int dropsGathered;
 
     public GameScreen(final Drop gam) {
         this.game = gam;
 
         //carregamento das imagens do balde e da gota 
-        dropImage = new Texture(Gdx.files.internal("assets//liuKang//liu_walking_01.png"));
-        bucketImage = new Texture(Gdx.files.internal("C:assets//scorpio//04.png"));
-
+       // dropImage = new Texture(Gdx.files.internal("assets//liuKang//liu_walking_01.png"));
+        bucketImage = new Texture(Gdx.files.internal("assets//scorpio//b_hit_05.png"));
+      
         //carregamento dos efeitos sonoros da chuva e dos pingos
         dropSound = Gdx.audio.newSound(Gdx.files.internal("assets\\Sons\\dark-crypt-144812.mp3"));
         rainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets\\Sons\\MusicaTema.mp3"));
@@ -55,12 +53,12 @@ public class GameScreen implements Screen {
         bucket.height = 64;
 
         //aqui é criada a matriz que irá gerar os pingos de chuva 
-        raindrops = new Array<Rectangle>();
-        spawnRaindrop();
+        /*raindrops = new Array<Rectangle>();
+        spawnRaindrop();*/
 
     }
 
-    private void spawnRaindrop() {
+    /*private void spawnRaindrop() {
         Rectangle raindrop = new Rectangle();
         raindrop.x = MathUtils.random(0, 800 - 64);
         raindrop.y = 480;
@@ -68,7 +66,7 @@ public class GameScreen implements Screen {
         raindrop.height = 64;
         raindrops.add(raindrop);
         lastDropTime = TimeUtils.nanoTime();
-    }
+    }*/
 
     @Override
     public void render(float delta) {
@@ -89,30 +87,42 @@ public class GameScreen implements Screen {
 
         //aqui o balde e as gotas são desenhados novamente
         game.batch.begin();
-        game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
+       // game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
         game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
-        for (Rectangle raindrop : raindrops) {
+       /*  for (Rectangle raindrop : raindrops) {
             game.batch.draw(dropImage, raindrop.x, raindrop.y);
-        }
+        }*/
         game.batch.end();
 
         //processo de entrada por parte do usuário através
         // do mouse ou teclado(setas).
-        if (Gdx.input.isTouched()) {
+       /*  if (Gdx.input.isTouched()) {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
             bucket.x = touchPos.x - 64 / 2;
-        }
+        } */
+
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
             bucket.x -= 200 * Gdx.graphics.getDeltaTime();
         }
         if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
             bucket.x += 200 * Gdx.graphics.getDeltaTime();
+        }if (Gdx.input.isKeyPressed(Keys.UP)) {
+            bucket.y += 200 * Gdx.graphics.getDeltaTime();
+        }
+        if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+            bucket.y -= 200 * Gdx.graphics.getDeltaTime();
         }
 
         //aqui o programa se certifica de que o balde está 
         // dentro dos limites da tela.
+        if (bucket.y < 0) {
+            bucket.y = 0;
+        }
+        if (bucket.y > 480-20) {
+            bucket.y = 480-20;
+        }
         if (bucket.x < 0) {
             bucket.x = 0;
         }
@@ -122,14 +132,14 @@ public class GameScreen implements Screen {
 
         //aqui é verificado se é necessário criar novos pingos
         // de chuva.
-        if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
+        /*if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
             spawnRaindrop();
-        }
+        }*/
 
         //aqui são movidas as gotas de chuva, removendo as que estão abaixo
         // da borda inferior da tela ou as que atingiram o balde, na qual 
         // será executado um efeito sonoro caso atinja o balde.
-        Iterator<Rectangle> iter = raindrops.iterator();
+    /*     Iterator<Rectangle> iter = raindrops.iterator();
         while (iter.hasNext()) {
             Rectangle raindrop = iter.next();
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
@@ -141,7 +151,7 @@ public class GameScreen implements Screen {
                 dropSound.play();
                 iter.remove();
             }
-        }
+        }*/
     }
 
     @Override
@@ -169,7 +179,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        dropImage.dispose();
+       // dropImage.dispose();
         bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
