@@ -36,10 +36,7 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
 
         // Desenha a imagem de fundo
-        game.batch.draw(background, 0, 0, 800, 480); // Ajuste a posição e o tamanho da imagem
-
-        // Desenha o texto por cima da imagem de fundo
-        
+        game.batch.draw(background, 0, 0, 800, 480); 
 
         game.batch.end();
 
