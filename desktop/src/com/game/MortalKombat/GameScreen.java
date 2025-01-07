@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class GameScreen implements Screen {
 
+
+    //sla
     final Drop game;
     //Texture dropImage;
     Texture bucketImage;
