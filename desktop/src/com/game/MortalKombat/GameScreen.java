@@ -1,5 +1,6 @@
 package com.game.MortalKombat;
 //import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.TimeUtils;
 //import com.badlogic.gdx.math.Vector3;
 //import com.badlogic.gdx.utils.Array;
 //import com.badlogic.gdx.utils.TimeUtils;
@@ -23,17 +25,18 @@ public class GameScreen implements Screen {
     Music rainMusic;
     OrthographicCamera camera;
     Rectangle bucket;
+    int tempo = 99 * 150;
     //Array<Rectangle> raindrops;
     //long lastDropTime;
-   //int dropsGathered;
+    //int dropsGathered;
 
     public GameScreen(final Drop gam) {
         this.game = gam;
 
         //carregamento das imagens do balde e da gota 
-       // dropImage = new Texture(Gdx.files.internal("assets//liuKang//liu_walking_01.png"));
+        // dropImage = new Texture(Gdx.files.internal("assets//liuKang//liu_walking_01.png"));
         bucketImage = new Texture(Gdx.files.internal("assets//scorpio//b_hit_05.png"));
-      
+
         //carregamento dos efeitos sonoros da chuva e dos pingos
         dropSound = Gdx.audio.newSound(Gdx.files.internal("assets\\Sons\\dark-crypt-144812.mp3"));
         rainMusic = Gdx.audio.newMusic(Gdx.files.internal("assets\\Sons\\MusicaTema.mp3"));
@@ -54,7 +57,6 @@ public class GameScreen implements Screen {
         //aqui é criada a matriz que irá gerar os pingos de chuva 
         /*raindrops = new Array<Rectangle>();
         spawnRaindrop();*/
-
     }
 
     /*private void spawnRaindrop() {
@@ -66,7 +68,6 @@ public class GameScreen implements Screen {
         raindrops.add(raindrop);
         lastDropTime = TimeUtils.nanoTime();
     }*/
-
     @Override
     public void render(float delta) {
         //Limpa a tela com um azul escuro.
@@ -86,43 +87,36 @@ public class GameScreen implements Screen {
 
         //aqui o balde e as gotas são desenhados novamente
         game.batch.begin();
-       // game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
-       game.batch.draw(background, 0, 0, 800, 480); 
+        // game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
+        game.batch.draw(background, 0, 0, 800, 480);
         game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
-       /*  for (Rectangle raindrop : raindrops) {
+        /*  for (Rectangle raindrop : raindrops) {
             game.batch.draw(dropImage, raindrop.x, raindrop.y);
         }*/
-        game.batch.end();
 
-        //processo de entrada por parte do usuário através
-        // do mouse ou teclado(setas).
-       /*  if (Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            bucket.x = touchPos.x - 64 / 2;
-        } */
+       
+        game.batch.end();
 
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
             bucket.x -= 600 * Gdx.graphics.getDeltaTime();
         }
         if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
             bucket.x += 600 * Gdx.graphics.getDeltaTime();
-        }if (Gdx.input.isKeyPressed(Keys.UP)) {
+        }
+        if (Gdx.input.isKeyPressed(Keys.UP)) {
             bucket.y += 600 * Gdx.graphics.getDeltaTime();
         }
         if (Gdx.input.isKeyPressed(Keys.DOWN)) {
             bucket.y -= 600 * Gdx.graphics.getDeltaTime();
         }
 
-
         //aqui o programa se certifica de que o balde está 
         // dentro dos limites da tela.
         if (bucket.y < 0) {
             bucket.y = 0;
         }
-        if (bucket.y > 480-150) {
-            bucket.y = 480-150;
+        if (bucket.y > 480 - 150) {
+            bucket.y = 480 - 150;
         }
 
         if (bucket.x < 0) {
@@ -132,23 +126,36 @@ public class GameScreen implements Screen {
             bucket.x = 800 - 64;
         }
 
-
-
         //Impedindo que o  personagem fique abaixo da borda inferior da tela
-        if(bucket.y < 30){
+        if (bucket.y < 30) {
             bucket.y = 30;
         }
+       
+        tempo -= Gdx.graphics.getDeltaTime();
+
+        // Impedir que fique negativo
+        if (tempo < 0) {
+            tempo = 0;
+        }
+        
+        // Exibir o tempo restante
+        System.out.println("Tempo restante: " + tempo + " segundos");
+        if (tempo == 0) {
+            System.out.println("Tempo esgotado!");
+            Gdx.app.exit();
+        }
+
+        
 
         //aqui é verificado se é necessário criar novos pingos
         // de chuva.
         /*if (TimeUtils.nanoTime() - lastDropTime > 1000000000) {
-            spawnRaindrop();
-        }*/
-
+                            spawnRaindrop();
+                        }*/
         //aqui são movidas as gotas de chuva, removendo as que estão abaixo
         // da borda inferior da tela ou as que atingiram o balde, na qual 
         // será executado um efeito sonoro caso atinja o balde.
-    /*     Iterator<Rectangle> iter = raindrops.iterator();
+        /*     Iterator<Rectangle> iter = raindrops.iterator();
         while (iter.hasNext()) {
             Rectangle raindrop = iter.next();
             raindrop.y -= 200 * Gdx.graphics.getDeltaTime();
@@ -169,6 +176,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+       
         //iniciar a reprodução da música de 
         //fundo assim que a tela é mostrada
         rainMusic.play();
@@ -180,6 +188,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
+       
     }
 
     @Override
@@ -188,7 +197,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-       // dropImage.dispose();
+        // dropImage.dispose();
         bucketImage.dispose();
         dropSound.dispose();
         rainMusic.dispose();
