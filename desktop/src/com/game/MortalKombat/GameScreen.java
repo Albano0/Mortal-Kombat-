@@ -32,6 +32,8 @@ public class GameScreen implements Screen {
     //long lastDropTime;
     //int dropsGathered;
 
+
+    
     public GameScreen(final Drop gam) {
         this.game = gam;
 
