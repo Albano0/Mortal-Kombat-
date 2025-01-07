@@ -8,7 +8,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 //import com.badlogic.gdx.math.Vector3;
 //import com.badlogic.gdx.utils.Array;
@@ -47,10 +46,10 @@ public class GameScreen implements Screen {
         //aqui é criado o "retangulo" onde o sprite do balde ficará localizado
         bucket = new Rectangle();
         bucket.x = 800 / 2 - 64 / 2; //aqui o balde é colocado centralizado na horizontal
-        bucket.y = 20; //aqui defini-se a posição do balde sendo no canto inferior
+        bucket.y = 30; //aqui defini-se a posição do balde sendo no canto inferior
         //da tela 20 pixels acima da borda.
         bucket.width = 64;
-        bucket.height = 90;
+        bucket.height = 150;
 
         //aqui é criada a matriz que irá gerar os pingos de chuva 
         /*raindrops = new Array<Rectangle>();
@@ -116,13 +115,14 @@ public class GameScreen implements Screen {
             bucket.y -= 600 * Gdx.graphics.getDeltaTime();
         }
 
+
         //aqui o programa se certifica de que o balde está 
         // dentro dos limites da tela.
         if (bucket.y < 0) {
             bucket.y = 0;
         }
-        if (bucket.y > 480-90) {
-            bucket.y = 480-90;
+        if (bucket.y > 480-150) {
+            bucket.y = 480-150;
         }
 
         if (bucket.x < 0) {
@@ -130,6 +130,13 @@ public class GameScreen implements Screen {
         }
         if (bucket.x > 800 - 64) {
             bucket.x = 800 - 64;
+        }
+
+
+
+        //Impedindo que o  personagem fique abaixo da borda inferior da tela
+        if(bucket.y < 30){
+            bucket.y = 30;
         }
 
         //aqui é verificado se é necessário criar novos pingos
