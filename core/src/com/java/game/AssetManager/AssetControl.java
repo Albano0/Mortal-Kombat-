@@ -29,7 +29,7 @@ public class AssetControl {
         AssetManager.load("Arenas/Arena Shrine.png", Texture.class);
         AssetManager.load("Sons/MusicaTema.mp3", Music.class);
 
-        AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
+        AssetManager.load("Personagens/Scorpion/scorpion.png", Texture.class);
         /*AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
         AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
         AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
@@ -40,7 +40,7 @@ public class AssetControl {
         AssetManager.finishLoading();
 
         // Obter as texturas carregadas
-        textures.put("Scorpion", AssetManager.get("Personagens/Scorpion/A.jpg", Texture.class));
+        textures.put("Scorpion", AssetManager.get("Personagens/Scorpion/scorpion.png", Texture.class));
         textures.put("Arena", AssetManager.get("Arenas/Arena Shrine.png", Texture.class));
         textures.put("SubZero", AssetManager.get("Personagens/SubZero/B.jpg", Texture.class));
         textures.put("Fire", AssetManager.get("Personagens/Scorpion/Fire.jpg", Texture.class));

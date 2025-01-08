@@ -1,5 +1,6 @@
 /*package com.java.game.Personagens.Scorpion;
 
+import com.java.game.AssetManager.AssetControl;
 import com.badlogic.gdx.math.Vector2;
 
 //import com.java.game.AssetManager.AssetControl;
@@ -18,4 +19,4 @@ public class Scorpion extends Players{
     this.currentTRegion = AssetsControl.getCurrentTRegion(animation);
     
 }
-    */
+*/

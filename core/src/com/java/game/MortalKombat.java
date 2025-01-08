@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MortalKombat extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img, tScorpion, tSubZero, tBall;
+	Texture background, tScorpion, tSubZero, tBall;
 	private Sprite Scorpion, SubZero, Ball;
 	private float posX, posY, velocity, XBall, YBall;
 	private boolean special;
@@ -19,12 +19,12 @@ public class MortalKombat extends ApplicationAdapter {
 	public void create () {
 
 		batch = new SpriteBatch();
-		img = new Texture("Arenas/Arena Shrine.png");
+		background = new Texture("Arenas/Arena Shrine.png");
 		posX = 0;
 		posY = 0;
 		velocity = 10;
 		
-		tScorpion = new Texture("Personagens/Scorpion/A.jpg");
+		tScorpion = new Texture("Personagens/Scorpion/scorpion.png");
 		Scorpion = new Sprite(tScorpion);
 		
 		tSubZero = new Texture("Personagens/SubZero/B.jpg");
@@ -44,19 +44,19 @@ public class MortalKombat extends ApplicationAdapter {
 		this.moveBall();
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(background, 0, 0, 800, 480);
 
 		if(special){
-			batch.draw(Scorpion, posX, posY);
+			batch.draw(Ball, XBall, YBall);
 		}
-		batch.draw(Ball, XBall, YBall);
+		batch.draw(Scorpion, posX, posY);
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		background.dispose();
 	}
 
 	private void movePlayer(){
