@@ -9,8 +9,8 @@ buildscript {
         google()
     }
     dependencies {
-       
         
+
     }
 }
 
@@ -19,7 +19,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "My GDX Game"
+        appName = "MortalKombat"
         gdxVersion = '1.12.1'
         roboVMVersion = '2.3.21'
         box2DLightsVersion = '1.5'
@@ -47,7 +47,7 @@ project(":desktop") {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         
     }
 }
@@ -58,11 +58,7 @@ project(":core") {
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-       
-    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         
     }
 }
