@@ -3,6 +3,7 @@ package com.java.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -22,16 +23,24 @@ public class MortalKombat extends ApplicationAdapter {
     private float posX, posY, velocity;
     private float ballX, ballY;
     private boolean isMoving, isSpecialActive;
+    private Music backgroundMusic;
+
 
     @Override
     public void create() {
+
+        
         batch = new SpriteBatch();
         assetControl = new AssetControl();
         assetControl.create();
 
+        backgroundMusic = AssetControl.getSounds("Music");
+        backgroundMusic.setLooping(true); // Repetir automaticamente
+        backgroundMusic.play();
+
         // Configurar fundo da arena
         background = new TextureRegion(AssetControl.getTexture("Arena"));
-
+        
         // Configurar animações do Scorpion
         TextureRegion[][] scorpionIdle = AssetControl.getTextureRegions("ScorpionIdle", new Vector2(74, 139));
         TextureRegion[][] scorpionMove = AssetControl.getTextureRegions("ScorpionMove", new Vector2(102, 148));

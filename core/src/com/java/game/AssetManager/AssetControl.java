@@ -33,7 +33,7 @@ public class AssetControl {
 
         AssetManager.load("Personagens/Scorpion/idle.png", Texture.class);
         AssetManager.load("Personagens/Scorpion/move.png", Texture.class);
-        
+
         AssetManager.load("Personagens/Scorpion/Fire.jpg", Texture.class);
 
         //AssetManager.load("Personagens/Subzero/teste.png", Texture.class);
@@ -53,6 +53,8 @@ public class AssetControl {
         textures.put("ScorpionMove", AssetManager.get("Personagens/Scorpion/move.png", Texture.class));
         textures.put("Arena", AssetManager.get("Arenas/Arena Shrine.png", Texture.class));
         textures.put("Fire", AssetManager.get("Personagens/Scorpion/Fire.jpg", Texture.class));
+
+        sounds.put("Music", AssetManager.get("Sons/MusicaTema.mp3", Music.class));
         //textures.put("Scorpion", AssetManager.get("Personagens/Scorpion/A.jpg", Texture.class));
 
         stateTime = 0f;
