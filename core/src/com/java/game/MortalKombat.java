@@ -3,105 +3,151 @@ package com.java.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.java.game.AssetManager.AssetControl;
 
 public class MortalKombat extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture background, tScorpion, tSubZero, tBall;
-	private Sprite Scorpion, SubZero, Ball;
-	private float posX, posY, velocity, XBall, YBall;
-	private boolean special;
+    private SpriteBatch batch;
+    private AssetControl assetControl;
+    private Animation<TextureRegion> scorpionIdleAnimation;
+    private Animation<TextureRegion> scorpionMoveAnimation;
+    private Animation<TextureRegion> ballAnimation;
+    private TextureRegion currentFrame;
+    private TextureRegion currentBallFrame;
+    private TextureRegion background;
+    private float posX, posY, velocity;
+    private float ballX, ballY;
+    private boolean isMoving, isSpecialActive;
 
-	@Override
-	public void create () {
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        assetControl = new AssetControl();
+        assetControl.create();
 
-		batch = new SpriteBatch();
-		background = new Texture("Arenas/Arena Shrine.png");
-		posX = 0;
-		posY = 0;
-		velocity = 10;
-		
-		tScorpion = new Texture("Personagens/Scorpion/scorpion.png");
-		Scorpion = new Sprite(tScorpion);
-		
-		tSubZero = new Texture("Personagens/SubZero/B.jpg");
-		SubZero = new Sprite(tSubZero);
+        // Configurar fundo da arena
+        background = new TextureRegion(AssetControl.getTexture("Arena"));
 
-		tBall = new Texture("Personagens/Scorpion/Fire.jpg");
-		Ball = new Sprite(tBall);
-		XBall = posX;
-		YBall = posY;
+        // Configurar animações do Scorpion
+        TextureRegion[][] scorpionIdle = AssetControl.getTextureRegions("ScorpionIdle", new Vector2(74, 139));
+        TextureRegion[][] scorpionMove = AssetControl.getTextureRegions("ScorpionMove", new Vector2(102, 148));
+        scorpionIdleAnimation = AssetControl.getAnimation(scorpionIdle, 0, 0.1f); // Linha 0: Animação Idle
+        scorpionMoveAnimation = AssetControl.getAnimation(scorpionMove, 0, 0.3f); // Linha 1: Animação Move
 
-	}
+        // Configurar animação da bola de fogo
+        TextureRegion[][] ballFrames = AssetControl.getTextureRegions("Fire", new Vector2(50, 50));
+        ballAnimation = AssetControl.getAnimation(ballFrames, 0, 0.1f); // Linha 0: Animação da bola
 
-	@Override
-	public void render () {
+        posX = 0;
+        posY = 0;
+        velocity = 10;
 
-		this.movePlayer();
-		this.moveBall();
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(background, 0, 0, 800, 480);
+        ballX = posX;
+        ballY = posY;
+        isMoving = false;
+        isSpecialActive = false;
+    }
 
-		if(special){
-			batch.draw(Ball, XBall, YBall);
-		}
-		batch.draw(Scorpion, posX, posY);
-		batch.end();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		background.dispose();
-	}
+    @Override
+    public void render() {
+        update(Gdx.graphics.getDeltaTime());
 
-	private void movePlayer(){
-		if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
-			if(posX < Gdx.graphics.getWidth() - Scorpion.getWidth()){
-			posX += velocity;
-			}
-		}
+        ScreenUtils.clear(1, 0, 0, 1);
+        batch.begin();
 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
-			if(posX > 0)
-			posX -= velocity;
-		}
+        // Desenhar o fundo da arena
+        batch.draw(background, 0, 0, 800, 480);
 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-			if(posY < Gdx.graphics.getWidth() - Scorpion.getWidth())
-			posY += velocity;
-		}
+        // Desenhar o quadro atual da animação do Scorpion
+        batch.draw(currentFrame, posX, posY);
 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
-			if(posY > 0)
-			posY -= velocity;
-		}
+        // Desenhar a bola de fogo, se ativa
+        if (isSpecialActive) {
+            batch.draw(currentBallFrame, ballX, ballY);
+        }
 
-	}
+        batch.end();
+    }
 
-	private void moveBall(){
-		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !special){
-			XBall += 20;
-			special = true;
-			YBall = posY;
-		}
+    @Override
+    public void dispose() {
+        batch.dispose();
+        assetControl.dispose();
+    }
 
-		if(special){
-			if(XBall < Gdx.graphics.getWidth()){
-			XBall += 20;
-			}else{
-				XBall = posX;
-				special = false;
-			}
-		}else{
-			XBall = posX;
-			YBall = posY;
-		}
-		
-		
-	}
+    private void update(float deltaTime) {
+        handleInput();
+
+        // Atualizar animação do Scorpion com base no estado
+        if (isMoving) {
+            currentFrame = AssetControl.getCurrentTRegion(scorpionMoveAnimation);
+        } else {
+            currentFrame = AssetControl.getCurrentTRegion(scorpionIdleAnimation);
+        }
+
+        // Atualizar animação da bola de fogo
+        if (isSpecialActive) {
+            currentBallFrame = AssetControl.getCurrentTRegion(ballAnimation);
+            ballX += 200 * deltaTime; // Velocidade da bola
+
+            // Verificar se a bola saiu da tela
+            if (ballX > Gdx.graphics.getWidth()) {
+                resetBall();
+            }
+        }
+
+        assetControl.update(deltaTime);
+    }
+
+    private void handleInput() {
+        isMoving = false;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if (posX < Gdx.graphics.getWidth() - currentFrame.getRegionWidth()) {
+                posX += velocity;
+                isMoving = true;
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if (posX > 0) {
+                posX -= velocity;
+                isMoving = true;
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (posY < Gdx.graphics.getHeight() - currentFrame.getRegionHeight()) {
+                posY += velocity;
+                isMoving = true;
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if (posY > 0) {
+                posY -= velocity;
+                isMoving = true;
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isSpecialActive) {
+            activateBall();
+        }
+    }
+
+    private void activateBall() {
+        isSpecialActive = true;
+        ballX = posX + 48; // Posição inicial da bola em relação ao Scorpion
+        ballY = posY + 24; // Centralizar a bola verticalmente com o Scorpion
+    }
+
+    private void resetBall() {
+        isSpecialActive = false;
+        ballX = posX;
+        ballY = posY;
+    }
 }

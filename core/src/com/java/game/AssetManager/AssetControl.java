@@ -1,7 +1,9 @@
 package com.java.game.AssetManager;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -29,7 +31,14 @@ public class AssetControl {
         AssetManager.load("Arenas/Arena Shrine.png", Texture.class);
         AssetManager.load("Sons/MusicaTema.mp3", Music.class);
 
-        AssetManager.load("Personagens/Scorpion/scorpion.png", Texture.class);
+        AssetManager.load("Personagens/Scorpion/idle.png", Texture.class);
+        AssetManager.load("Personagens/Scorpion/move.png", Texture.class);
+        
+        AssetManager.load("Personagens/Scorpion/Fire.jpg", Texture.class);
+
+        //AssetManager.load("Personagens/Subzero/teste.png", Texture.class);
+        //AssetManager.load("Personagens/Subzero/Fire.jpg", Texture.class);
+        
         /*AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
         AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
         AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
@@ -40,9 +49,9 @@ public class AssetControl {
         AssetManager.finishLoading();
 
         // Obter as texturas carregadas
-        textures.put("Scorpion", AssetManager.get("Personagens/Scorpion/scorpion.png", Texture.class));
+        textures.put("ScorpionIdle", AssetManager.get("Personagens/Scorpion/idle.png", Texture.class));
+        textures.put("ScorpionMove", AssetManager.get("Personagens/Scorpion/move.png", Texture.class));
         textures.put("Arena", AssetManager.get("Arenas/Arena Shrine.png", Texture.class));
-        textures.put("SubZero", AssetManager.get("Personagens/SubZero/B.jpg", Texture.class));
         textures.put("Fire", AssetManager.get("Personagens/Scorpion/Fire.jpg", Texture.class));
         //textures.put("Scorpion", AssetManager.get("Personagens/Scorpion/A.jpg", Texture.class));
 
@@ -73,10 +82,14 @@ public class AssetControl {
         return getTextureRegions(key, new Vector2(48, 48));
     }
 
-    public static Animation<TextureRegion> getAnimation(TextureRegion[][] textureRegion, int line,
-            float frameDuration) {
-        return new Animation<TextureRegion>(frameDuration, textureRegion[line]);
+    public static Animation<TextureRegion> getAnimation(TextureRegion[][] textureRegion, int line, float frameDuration) {
+    // Filtra frames nulos antes de criar a animação
+    TextureRegion[] validFrames = Arrays.stream(textureRegion[line])
+                                        .filter(Objects::nonNull)
+                                        .toArray(TextureRegion[]::new);
+    return new Animation<>(frameDuration, validFrames);
     }
+
 
     public static TextureRegion getCurrentTRegion(Animation<TextureRegion> animation) {
         return animation.getKeyFrame(stateTime, true);

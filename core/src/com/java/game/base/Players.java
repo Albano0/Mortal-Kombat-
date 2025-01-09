@@ -1,4 +1,4 @@
-package com.java.game.base;
+/*package com.java.game.base;
 
 import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.graphics.Color;
@@ -18,3 +18,4 @@ public class Players{
     protected float[] badEffectTime = { 0.f, 0.f, 0.f, 0.f }; // ROSA, VERDE, VERMELHA, AZUL
 
 }
+*/

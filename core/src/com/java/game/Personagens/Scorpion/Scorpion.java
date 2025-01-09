@@ -1,5 +1,6 @@
 /*package com.java.game.Personagens.Scorpion;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.java.game.AssetManager.AssetControl;
 import com.badlogic.gdx.math.Vector2;
 
@@ -12,11 +13,13 @@ public class Scorpion extends Players{
         super.originalVelocity = 50.f;
         super.life = 10.f;
         super.maxLife = super.life;
-    }
+    
 
-    textureRegions = AssetsControl.getTextureRegions("Scorpion");
+    TextureRegion = AssetsControl.getTextureRegions("Scorpion");
     animation = AssetsControl.getAnimation(textureRegions, 0, 0.15f);
     this.currentTRegion = AssetsControl.getCurrentTRegion(animation);
+    }
     
 }
-*/
+    */
+
