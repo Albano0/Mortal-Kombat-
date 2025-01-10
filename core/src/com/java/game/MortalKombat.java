@@ -57,7 +57,7 @@ public class MortalKombat extends ApplicationAdapter {
         // Inicializar variáveis de estado
         posX = 0;
         posY = 0;
-        velocity = 10;
+        velocity = 6;
         fireballX = posX;
         fireballY = posY;
         isMoving = false;
@@ -104,7 +104,7 @@ public class MortalKombat extends ApplicationAdapter {
         // Atualizar animação da bola de fogo
         if (isFireballActive) {
             currentFireballFrame = AssetControl.getCurrentTRegion(fireballAnimation);
-            fireballX += 200 * deltaTime; // Velocidade da bola de fogo
+            fireballX += 350 * deltaTime; // Velocidade da bola de fogo
 
             // Verificar se a bola de fogo saiu da tela
             if (fireballX > Gdx.graphics.getWidth()) {
