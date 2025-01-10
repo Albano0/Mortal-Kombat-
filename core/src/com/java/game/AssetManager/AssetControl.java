@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,48 +15,39 @@ import com.badlogic.gdx.math.Vector2;
 
 public class AssetControl {
 
-    private AssetManager AssetManager;
+    private AssetManager assetManager;
     private static Map<String, Texture> textures;
-    private static Map<String, Music> sounds;
+    private static Map<String, Music> musics;
+    private static Map<String, Sound> sounds;
     private static float stateTime;
 
+    public void create() {
+        assetManager = new AssetManager();
+        textures = new HashMap<>();
+        musics = new HashMap<>();
+        sounds = new HashMap<>();
 
-    public void create(){
+        // Carregar texturas
+        assetManager.load("Arenas/Arena Shrine.png", Texture.class);
+        assetManager.load("Sons/MusicaTema.mp3", Music.class);
+        assetManager.load("Sons/FireBall/FireBall.mp3", Sound.class);
 
-        AssetManager = new AssetManager();
-        textures = new HashMap<String, Texture>();
-        sounds = new HashMap<String, Music>();
-
-        //Carregar texturas
-
-        AssetManager.load("Arenas/Arena Shrine.png", Texture.class);
-        AssetManager.load("Sons/MusicaTema.mp3", Music.class);
-
-        AssetManager.load("Personagens/Scorpion/idle.png", Texture.class);
-        AssetManager.load("Personagens/Scorpion/move.png", Texture.class);
-
-        AssetManager.load("Personagens/Scorpion/Fire.jpg", Texture.class);
-
-        //AssetManager.load("Personagens/Subzero/teste.png", Texture.class);
-        //AssetManager.load("Personagens/Subzero/Fire.jpg", Texture.class);
-        
-        /*AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
-        AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
-        AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
-        AssetManager.load("Personagens/Scorpion/A.jpg", Texture.class);
-        */
+        assetManager.load("Personagens/Scorpion/idle.png", Texture.class);
+        assetManager.load("Personagens/Scorpion/move.png", Texture.class);
+        assetManager.load("Personagens/Scorpion/Fire.jpg", Texture.class);
 
         // Espera que todos os assets sejam carregados
-        AssetManager.finishLoading();
+        assetManager.finishLoading();
 
         // Obter as texturas carregadas
-        textures.put("ScorpionIdle", AssetManager.get("Personagens/Scorpion/idle.png", Texture.class));
-        textures.put("ScorpionMove", AssetManager.get("Personagens/Scorpion/move.png", Texture.class));
-        textures.put("Arena", AssetManager.get("Arenas/Arena Shrine.png", Texture.class));
-        textures.put("Fire", AssetManager.get("Personagens/Scorpion/Fire.jpg", Texture.class));
+        textures.put("ScorpionIdle", assetManager.get("Personagens/Scorpion/idle.png", Texture.class));
+        textures.put("ScorpionMove", assetManager.get("Personagens/Scorpion/move.png", Texture.class));
+        textures.put("Arena", assetManager.get("Arenas/Arena Shrine.png", Texture.class));
+        textures.put("Fire", assetManager.get("Personagens/Scorpion/Fire.jpg", Texture.class));
 
-        sounds.put("Music", AssetManager.get("Sons/MusicaTema.mp3", Music.class));
-        //textures.put("Scorpion", AssetManager.get("Personagens/Scorpion/A.jpg", Texture.class));
+        // Obter os sons carregados
+        musics.put("Music", assetManager.get("Sons/MusicaTema.mp3", Music.class));
+        sounds.put("FireSound", assetManager.get("Sons/FireBall/FireBall.mp3", Sound.class));
 
         stateTime = 0f;
     }
@@ -65,19 +57,17 @@ public class AssetControl {
         stateTime += deltaTime;
     }
 
+    // Métodos para texturas
     public static Texture getTexture(String key) {
         return textures.get(key);
     }
 
-    public static Music getSounds(String key) {
-        return sounds.get(key);
-
-    }
-
     public static TextureRegion[][] getTextureRegions(String key, Vector2 size) {
-        return TextureRegion.split(textures.get(key),
-                /* textures.get(key).getWidth() / 4 */ (int) size.x,
-                /* textures.get(key).getHeight() / 6 */(int) size.y);
+        return TextureRegion.split(
+            textures.get(key),
+            (int) size.x,
+            (int) size.y
+        );
     }
 
     public static TextureRegion[][] getTextureRegions(String key) {
@@ -85,19 +75,39 @@ public class AssetControl {
     }
 
     public static Animation<TextureRegion> getAnimation(TextureRegion[][] textureRegion, int line, float frameDuration) {
-    // Filtra frames nulos antes de criar a animação
-    TextureRegion[] validFrames = Arrays.stream(textureRegion[line])
-                                        .filter(Objects::nonNull)
-                                        .toArray(TextureRegion[]::new);
-    return new Animation<>(frameDuration, validFrames);
+        // Filtrar frames nulos antes de criar a animação
+        TextureRegion[] validFrames = Arrays.stream(textureRegion[line])
+                                            .filter(Objects::nonNull)
+                                            .toArray(TextureRegion[]::new);
+        return new Animation<>(frameDuration, validFrames);
     }
-
 
     public static TextureRegion getCurrentTRegion(Animation<TextureRegion> animation) {
         return animation.getKeyFrame(stateTime, true);
     }
 
+    // Métodos para sons e músicas
+    public static Music getMusic(String key) {
+        return musics.get(key);
+    }
+
+    public static Sound getSound(String key) {
+        return sounds.get(key);
+    }
+
+    public static void setMusicVolume(String key, float volume) {
+        if (musics.containsKey(key)) {
+            musics.get(key).setVolume(volume);
+        }
+    }
+
+    public static void playSound(String key, float volume) {
+        if (sounds.containsKey(key)) {
+            sounds.get(key).play(volume);
+        }
+    }
+
     public void dispose() {
-        AssetManager.dispose();
+        assetManager.dispose();
     }
 }

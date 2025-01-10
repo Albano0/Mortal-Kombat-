@@ -14,51 +14,54 @@ import com.java.game.AssetManager.AssetControl;
 public class MortalKombat extends ApplicationAdapter {
     private SpriteBatch batch;
     private AssetControl assetControl;
+
     private Animation<TextureRegion> scorpionIdleAnimation;
     private Animation<TextureRegion> scorpionMoveAnimation;
-    private Animation<TextureRegion> ballAnimation;
-    private TextureRegion currentFrame;
-    private TextureRegion currentBallFrame;
-    private TextureRegion background;
-    private float posX, posY, velocity;
-    private float ballX, ballY;
-    private boolean isMoving, isSpecialActive;
-    private Music backgroundMusic;
+    private Animation<TextureRegion> fireballAnimation;
 
+    private TextureRegion currentFrame;
+    private TextureRegion currentFireballFrame;
+    private TextureRegion background;
+
+    private float posX, posY, velocity;
+    private float fireballX, fireballY;
+    private boolean isMoving, isFireballActive;
+
+    private Music backgroundMusic;
 
     @Override
     public void create() {
-
-        
         batch = new SpriteBatch();
         assetControl = new AssetControl();
         assetControl.create();
 
-        backgroundMusic = AssetControl.getSounds("Music");
-        backgroundMusic.setLooping(true); // Repetir automaticamente
+        // Configurar música de fundo
+        backgroundMusic = AssetControl.getMusic("Music");
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f); // Volume ajuste
         backgroundMusic.play();
 
         // Configurar fundo da arena
         background = new TextureRegion(AssetControl.getTexture("Arena"));
-        
+
         // Configurar animações do Scorpion
-        TextureRegion[][] scorpionIdle = AssetControl.getTextureRegions("ScorpionIdle", new Vector2(74, 139));
-        TextureRegion[][] scorpionMove = AssetControl.getTextureRegions("ScorpionMove", new Vector2(102, 148));
-        scorpionIdleAnimation = AssetControl.getAnimation(scorpionIdle, 0, 0.1f); // Linha 0: Animação Idle
-        scorpionMoveAnimation = AssetControl.getAnimation(scorpionMove, 0, 0.3f); // Linha 1: Animação Move
+        TextureRegion[][] scorpionIdleFrames = AssetControl.getTextureRegions("ScorpionIdle", new Vector2(74, 139));
+        TextureRegion[][] scorpionMoveFrames = AssetControl.getTextureRegions("ScorpionMove", new Vector2(102, 148));
+        scorpionIdleAnimation = AssetControl.getAnimation(scorpionIdleFrames, 0, 0.1f);
+        scorpionMoveAnimation = AssetControl.getAnimation(scorpionMoveFrames, 0, 0.3f);
 
         // Configurar animação da bola de fogo
-        TextureRegion[][] ballFrames = AssetControl.getTextureRegions("Fire", new Vector2(50, 50));
-        ballAnimation = AssetControl.getAnimation(ballFrames, 0, 0.1f); // Linha 0: Animação da bola
+        TextureRegion[][] fireballFrames = AssetControl.getTextureRegions("Fire", new Vector2(50, 50));
+        fireballAnimation = AssetControl.getAnimation(fireballFrames, 0, 0.1f);
 
+        // Inicializar variáveis de estado
         posX = 0;
         posY = 0;
         velocity = 10;
-
-        ballX = posX;
-        ballY = posY;
+        fireballX = posX;
+        fireballY = posY;
         isMoving = false;
-        isSpecialActive = false;
+        isFireballActive = false;
     }
 
     @Override
@@ -71,12 +74,12 @@ public class MortalKombat extends ApplicationAdapter {
         // Desenhar o fundo da arena
         batch.draw(background, 0, 0, 800, 480);
 
-        // Desenhar o quadro atual da animação do Scorpion
+        // Desenhar o Scorpion
         batch.draw(currentFrame, posX, posY);
 
-        // Desenhar a bola de fogo, se ativa
-        if (isSpecialActive) {
-            batch.draw(currentBallFrame, ballX, ballY);
+        // Desenhar a bola de fogo, se estiver ativa
+        if (isFireballActive) {
+            batch.draw(currentFireballFrame, fireballX, fireballY);
         }
 
         batch.end();
@@ -91,7 +94,7 @@ public class MortalKombat extends ApplicationAdapter {
     private void update(float deltaTime) {
         handleInput();
 
-        // Atualizar animação do Scorpion com base no estado
+        // Atualizar animação do Scorpion
         if (isMoving) {
             currentFrame = AssetControl.getCurrentTRegion(scorpionMoveAnimation);
         } else {
@@ -99,13 +102,13 @@ public class MortalKombat extends ApplicationAdapter {
         }
 
         // Atualizar animação da bola de fogo
-        if (isSpecialActive) {
-            currentBallFrame = AssetControl.getCurrentTRegion(ballAnimation);
-            ballX += 200 * deltaTime; // Velocidade da bola
+        if (isFireballActive) {
+            currentFireballFrame = AssetControl.getCurrentTRegion(fireballAnimation);
+            fireballX += 200 * deltaTime; // Velocidade da bola de fogo
 
-            // Verificar se a bola saiu da tela
-            if (ballX > Gdx.graphics.getWidth()) {
-                resetBall();
+            // Verificar se a bola de fogo saiu da tela
+            if (fireballX > Gdx.graphics.getWidth()) {
+                resetFireball();
             }
         }
 
@@ -115,48 +118,41 @@ public class MortalKombat extends ApplicationAdapter {
     private void handleInput() {
         isMoving = false;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if (posX < Gdx.graphics.getWidth() - currentFrame.getRegionWidth()) {
-                posX += velocity;
-                isMoving = true;
-            }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && posX < Gdx.graphics.getWidth() - currentFrame.getRegionWidth()) {
+            posX += velocity;
+            isMoving = true;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if (posX > 0) {
-                posX -= velocity;
-                isMoving = true;
-            }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && posX > 0) {
+            posX -= velocity;
+            isMoving = true;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if (posY < Gdx.graphics.getHeight() - currentFrame.getRegionHeight()) {
-                posY += velocity;
-                isMoving = true;
-            }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP) && posY < Gdx.graphics.getHeight() - currentFrame.getRegionHeight()) {
+            posY += velocity;
+            isMoving = true;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if (posY > 0) {
-                posY -= velocity;
-                isMoving = true;
-            }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && posY > 0) {
+            posY -= velocity;
+            isMoving = true;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isSpecialActive) {
-            activateBall();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !isFireballActive) {
+            activateFireball();
         }
     }
 
-    private void activateBall() {
-        isSpecialActive = true;
-        ballX = posX + 48; // Posição inicial da bola em relação ao Scorpion
-        ballY = posY + 24; // Centralizar a bola verticalmente com o Scorpion
+    private void activateFireball() {
+        isFireballActive = true;
+        fireballX = posX + 48; // Posição inicial da bola em relação ao Scorpion
+        fireballY = posY + 24; // Centralizar a bola verticalmente com o Scorpion
+        AssetControl.playSound("FireSound", 1.0f); // Tocar som ao lançar a bola de fogo
     }
 
-    private void resetBall() {
-        isSpecialActive = false;
-        ballX = posX;
-        ballY = posY;
+    private void resetFireball() {
+        isFireballActive = false;
+        fireballX = posX;
+        fireballY = posY;
     }
 }
