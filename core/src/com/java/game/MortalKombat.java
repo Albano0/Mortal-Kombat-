@@ -48,7 +48,7 @@ public class MortalKombat extends ApplicationAdapter {
         TextureRegion[][] scorpionIdleFrames = AssetControl.getTextureRegions("ScorpionIdle", new Vector2(74, 139));
         TextureRegion[][] scorpionMoveFrames = AssetControl.getTextureRegions("ScorpionMove", new Vector2(102, 148));
         scorpionIdleAnimation = AssetControl.getAnimation(scorpionIdleFrames, 0, 0.1f);
-        scorpionMoveAnimation = AssetControl.getAnimation(scorpionMoveFrames, 0, 0.3f);
+        scorpionMoveAnimation = AssetControl.getAnimation(scorpionMoveFrames, 0, 0.1f);
 
         // Configurar animação da bola de fogo
         TextureRegion[][] fireballFrames = AssetControl.getTextureRegions("Fire", new Vector2(50, 50));
@@ -56,8 +56,8 @@ public class MortalKombat extends ApplicationAdapter {
 
         // Inicializar variáveis de estado
         posX = 0;
-        posY = 0;
-        velocity = 6;
+        posY = 25;
+        velocity = 5;
         fireballX = posX;
         fireballY = posY;
         isMoving = false;
@@ -129,12 +129,10 @@ public class MortalKombat extends ApplicationAdapter {
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP) && posY < Gdx.graphics.getHeight() - currentFrame.getRegionHeight()) {
-            posY += velocity;
             isMoving = true;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && posY > 0) {
-            posY -= velocity;
             isMoving = true;
         }
 
@@ -146,7 +144,7 @@ public class MortalKombat extends ApplicationAdapter {
     private void activateFireball() {
         isFireballActive = true;
         fireballX = posX + 48; // Posição inicial da bola em relação ao Scorpion
-        fireballY = posY + 24; // Centralizar a bola verticalmente com o Scorpion
+        fireballY = posY + 70; // Centralizar a bola verticalmente com o Scorpion
         AssetControl.playSound("FireSound", 1.0f); // Tocar som ao lançar a bola de fogo
     }
 
