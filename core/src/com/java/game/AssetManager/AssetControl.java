@@ -32,18 +32,18 @@ public class AssetControl {
         assetManager.load("Sons/MusicaTema.mp3", Music.class);
         assetManager.load("Sons/FireBall/FireBall.mp3", Sound.class);
 
-        assetManager.load("Personagens/Scorpion/idle.png", Texture.class);
-        assetManager.load("Personagens/Scorpion/move.png", Texture.class);
-        assetManager.load("Personagens/Scorpion/Fire.jpg", Texture.class);
+        assetManager.load("Personagens/Scorpion/PosturaLuta.png", Texture.class);
+        assetManager.load("Personagens/Scorpion/Andando.png", Texture.class);
+        assetManager.load("Personagens/Scorpion/BolaFogo.png", Texture.class);
 
         // Espera que todos os assets sejam carregados
         assetManager.finishLoading();
 
         // Obter as texturas carregadas
-        textures.put("ScorpionIdle", assetManager.get("Personagens/Scorpion/idle.png", Texture.class));
-        textures.put("ScorpionMove", assetManager.get("Personagens/Scorpion/move.png", Texture.class));
+        textures.put("ScorpionIdle", assetManager.get("Personagens/Scorpion/PosturaLuta.png", Texture.class));
+        textures.put("ScorpionMove", assetManager.get("Personagens/Scorpion/Andando.png", Texture.class));
         textures.put("Arena", assetManager.get("Arenas/Arena Shrine.png", Texture.class));
-        textures.put("Fire", assetManager.get("Personagens/Scorpion/Fire.jpg", Texture.class));
+        textures.put("Fire", assetManager.get("Personagens/Scorpion/BolaFogo.png", Texture.class));
 
         // Obter os sons carregados
         musics.put("Music", assetManager.get("Sons/MusicaTema.mp3", Music.class));
