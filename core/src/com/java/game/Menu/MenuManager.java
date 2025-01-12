@@ -32,17 +32,17 @@ public class MenuManager implements Screen {
 
         // Estilos para cada botão
         ImageButtonStyle playStyle = new ImageButtonStyle();
-        playStyle.up = new TextureRegionDrawable(new Texture("Design_sem_nome.png"));
+        playStyle.up = new TextureRegionDrawable(new Texture("assets/Play.png"));
 
         ImageButtonStyle exitStyle = new ImageButtonStyle();
-        exitStyle.up = new TextureRegionDrawable(new Texture("Design_sem_nome.png"));
+        exitStyle.up = new TextureRegionDrawable(new Texture("assets/Exit.png"));
 
         ImageButtonStyle configStyle = new ImageButtonStyle();
-        configStyle.up = new TextureRegionDrawable(new Texture("Design_sem_nome.png"));
+        configStyle.up = new TextureRegionDrawable(new Texture("assets//Configuracao.png"));
 
         // Botão Play
         ImageButton playButton = new ImageButton(playStyle);
-        playButton.setSize(70, 50);
+        playButton.setSize(190, 30);
         playButton.setPosition(300, 50);
         playButton.addListener(new ClickListener() {
             @Override
@@ -54,7 +54,7 @@ public class MenuManager implements Screen {
 
         // Botão Exit
         ImageButton exitButton = new ImageButton(exitStyle);
-        exitButton.setSize(70, 40);
+        exitButton.setSize(190, 30);
         exitButton.setPosition(300, 10);
         exitButton.addListener(new ClickListener() {
             @Override
@@ -66,11 +66,11 @@ public class MenuManager implements Screen {
         // Botão Configurações
         ImageButton configButton = new ImageButton(configStyle);
         configButton.setSize(50, 50);
-        configButton.setPosition(700, 400);
+        configButton.setPosition(740, 400);
         configButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new ConfiguracoesMenu(game)); // Passa a instância correta de 'ObjetoMenu'
+                game.setScreen(new ConfiguracoesMenu(game, MenuManager.this)); // Passa a instância atual
             }
         });
 

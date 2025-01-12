@@ -64,9 +64,9 @@ public class AssetControl {
 
     public static TextureRegion[][] getTextureRegions(String key, Vector2 size) {
         return TextureRegion.split(
-            textures.get(key),
-            (int) size.x,
-            (int) size.y
+                textures.get(key),
+                (int) size.x,
+                (int) size.y
         );
     }
 
@@ -77,8 +77,8 @@ public class AssetControl {
     public static Animation<TextureRegion> getAnimation(TextureRegion[][] textureRegion, int line, float frameDuration) {
         // Filtrar frames nulos antes de criar a animação
         TextureRegion[] validFrames = Arrays.stream(textureRegion[line])
-                                            .filter(Objects::nonNull)
-                                            .toArray(TextureRegion[]::new);
+                .filter(Objects::nonNull)
+                .toArray(TextureRegion[]::new);
         return new Animation<>(frameDuration, validFrames);
     }
 
