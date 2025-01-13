@@ -2,6 +2,7 @@ package com.java.game.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+// import com.java.game.AssetManager.AssetControl;
 import com.java.game.MortalKombat;
 
 public class MenuManager implements Screen {
@@ -19,11 +21,21 @@ public class MenuManager implements Screen {
     private OrthographicCamera camera;
     private Texture background;
     private Stage stage;
+    // private Music MusicMenu;
+    // private AssetControl assetControl;
 
     public MenuManager(final ObjetoMenu game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+
+        // assetControl = new AssetControl();
+        // assetControl.create();
+    
+        // MusicMenu = AssetControl.getMusic("MusicMenu");
+        // MusicMenu.setLooping(true);
+        // MusicMenu.setVolume(0.5f);
+        // MusicMenu.play();
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -38,7 +50,7 @@ public class MenuManager implements Screen {
         exitStyle.up = new TextureRegionDrawable(new Texture("assets/Exit.png"));
 
         ImageButtonStyle configStyle = new ImageButtonStyle();
-        configStyle.up = new TextureRegionDrawable(new Texture("assets//Configuracao.png"));
+        configStyle.up = new TextureRegionDrawable(new Texture("assets/Configuracao.png"));
 
         // Botão Play
         ImageButton playButton = new ImageButton(playStyle);

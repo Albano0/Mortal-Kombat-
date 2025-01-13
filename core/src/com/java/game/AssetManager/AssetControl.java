@@ -18,6 +18,7 @@ public class AssetControl {
     private AssetManager assetManager;
     private static Map<String, Texture> textures;
     private static Map<String, Music> musics;
+    private static Map<String, Music> musics1;
     private static Map<String, Sound> sounds;
     private static float stateTime;
 
@@ -26,11 +27,13 @@ public class AssetControl {
         textures = new HashMap<>();
         musics = new HashMap<>();
         sounds = new HashMap<>();
+        musics1 = new HashMap<>();
 
         // Carregar texturas
         assetManager.load("Arenas/Arena Shrine.png", Texture.class);
         assetManager.load("Sons/MusicaTema.mp3", Music.class);
         assetManager.load("Sons/FireBall/FireBall.mp3", Sound.class);
+        // assetManager.load("Sons/Vazio.mp3", Sound.class);
 
         assetManager.load("Personagens/Scorpion/PosturaLuta.png", Texture.class);
         assetManager.load("Personagens/Scorpion/Andando.png", Texture.class);
@@ -46,6 +49,7 @@ public class AssetControl {
         textures.put("Fire", assetManager.get("Personagens/Scorpion/BolaFogo.png", Texture.class));
 
         // Obter os sons carregados
+        // musics.put("MusicMenu", assetManager.get("Sons/Vazio.mp3", Music.class));
         musics.put("Music", assetManager.get("Sons/MusicaTema.mp3", Music.class));
         sounds.put("FireSound", assetManager.get("Sons/FireBall/FireBall.mp3", Sound.class));
 
