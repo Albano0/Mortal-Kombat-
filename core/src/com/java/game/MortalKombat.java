@@ -30,6 +30,7 @@ public class MortalKombat implements Screen {
     private Animation<TextureRegion> scorpionMoveAnimation;
     private Animation<TextureRegion> fireballAnimation;
     private Animation<TextureRegion> SpecialAnimation;
+    private TextureRegion Life;
 
     // SubZero (IA)
     private Animation<TextureRegion> subZeroIdleAnimation;
@@ -81,6 +82,9 @@ public class MortalKombat implements Screen {
         scorpionIdleAnimation = AssetControl.getAnimation(scorpionIdleFrames, 0, 0.1f);
         scorpionMoveAnimation = AssetControl.getAnimation(scorpionMoveFrames, 0, 0.1f);
 
+        TextureRegion[][] BarLife = AssetControl.getTextureRegions("BarLife", new Vector2(35, 35));
+        Life = AssetControl.getTextureRegions(BarLife, 0);
+
         TextureRegion[][] fireballFrames = AssetControl.getTextureRegions("BolaFogo", new Vector2(35, 35));
         fireballAnimation = AssetControl.getAnimation(fireballFrames, 0, 0.1f);
 
@@ -123,6 +127,7 @@ public class MortalKombat implements Screen {
         ScreenUtils.clear(1, 0, 0, 1);
         batch.begin();
 
+        
         batch.draw(background, 0, 0, 800, 480);
         batch.draw(currentFrame, posX, posY);
         batch.draw(currentSubZeroFrame, subZeroX, subZeroY);
@@ -135,6 +140,7 @@ public class MortalKombat implements Screen {
 
         stage.act(delta);
         stage.draw();
+        
     }
 
     private void update(float deltaTime) {
@@ -195,8 +201,6 @@ public class MortalKombat implements Screen {
            y1 < y2 + height2 &&
            y1 + height1 > y2;
     }
-
-
 
     private void handleInput() {
         isMoving = false;
@@ -275,8 +279,6 @@ public class MortalKombat implements Screen {
                 currentState = IAState.IDLE;
         }
     }
-    
-    
 
     private void activateFireball() {
         specialAnimationStateTime = 0;  // Reseta o tempo da animação

@@ -33,6 +33,7 @@ public class AssetControl {
         assetManager.load("Arenas/Arena Shrine.png", Texture.class);
         assetManager.load("Sons/MusicaTema.mp3", Music.class);
         assetManager.load("Sons/FireBall/FireBall.mp3", Sound.class);
+        assetManager.load("BarLife.png", Texture.class);
 
         //Scorpion
         assetManager.load("Personagens/Scorpion/PosturaLuta.png", Texture.class);
@@ -50,6 +51,8 @@ public class AssetControl {
 
         // Obter as texturas carregadas
         textures.put("Arena", assetManager.get("Arenas/Arena Shrine.png", Texture.class));
+        textures.put("BarLife", assetManager.get("BarLife.png", Texture.class));
+
 
         textures.put("ScorpionIdle", assetManager.get("Personagens/Scorpion/PosturaLuta.png", Texture.class));
         textures.put("ScorpionMove", assetManager.get("Personagens/Scorpion/Andando.png", Texture.class));
