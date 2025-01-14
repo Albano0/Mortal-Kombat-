@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 // import com.java.game.AssetManager.AssetControl;
 import com.java.game.MortalKombat;
+import com.java.game.Personagens.EscolhaPersonagem;
 
 public class MenuManager implements Screen {
 
@@ -59,7 +60,7 @@ public class MenuManager implements Screen {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MortalKombat(game));
+                game.setScreen(new EscolhaPersonagem(game));
                 dispose();
             }
         });
