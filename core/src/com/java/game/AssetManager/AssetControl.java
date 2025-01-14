@@ -18,7 +18,6 @@ public class AssetControl {
     private AssetManager assetManager;
     private static Map<String, Texture> textures;
     private static Map<String, Music> musics;
-    private static Map<String, Music> musics1;
     private static Map<String, Sound> sounds;
     private static float stateTime;
 
@@ -27,24 +26,31 @@ public class AssetControl {
         textures = new HashMap<>();
         musics = new HashMap<>();
         sounds = new HashMap<>();
-        musics1 = new HashMap<>();
 
         // Carregar texturas
         assetManager.load("Arenas/Arena Shrine.png", Texture.class);
-        assetManager.load("Sons/MusicaTema.mp3", Music.class);
-        assetManager.load("Sons/FireBall/FireBall.mp3", Sound.class);
         assetManager.load("BarLife.png", Texture.class);
 
-        //Scorpion
+        // Carregar assets do Scorpion
         assetManager.load("Personagens/Scorpion/PosturaLuta.png", Texture.class);
         assetManager.load("Personagens/Scorpion/Andando.png", Texture.class);
         assetManager.load("Personagens/Scorpion/BolaFogo.png", Texture.class);
         assetManager.load("Personagens/Scorpion/SpecialAnimation.png", Texture.class);
 
-        //SubZero
+        // Carregar assets do SubZero
         assetManager.load("Personagens/SubZero/PosturaLuta.png", Texture.class);
         assetManager.load("Personagens/SubZero/Andando.png", Texture.class);
         assetManager.load("Personagens/SubZero/Bola de Gelo.png", Texture.class);
+
+        //BarLife
+        assetManager.load("HealthBarBackground.png", Texture.class);
+        assetManager.load("HealthBarFill.png", Texture.class);
+
+        assetManager.load("Personagens/Scorpion/VictoryAnimation.png", Texture.class);
+
+        // Carregar sons e músicas
+        assetManager.load("Sons/MusicaTema.mp3", Music.class);
+        assetManager.load("Sons/FireBall/FireBall.mp3", Sound.class);
 
         // Espera que todos os assets sejam carregados
         assetManager.finishLoading();
@@ -53,18 +59,24 @@ public class AssetControl {
         textures.put("Arena", assetManager.get("Arenas/Arena Shrine.png", Texture.class));
         textures.put("BarLife", assetManager.get("BarLife.png", Texture.class));
 
-
+        // Assets do Scorpion
         textures.put("ScorpionIdle", assetManager.get("Personagens/Scorpion/PosturaLuta.png", Texture.class));
         textures.put("ScorpionMove", assetManager.get("Personagens/Scorpion/Andando.png", Texture.class));
         textures.put("BolaFogo", assetManager.get("Personagens/Scorpion/BolaFogo.png", Texture.class));
         textures.put("SpecialScorpion", assetManager.get("Personagens/Scorpion/SpecialAnimation.png", Texture.class));
 
+        // Assets do SubZero
         textures.put("SubZeroIdle", assetManager.get("Personagens/SubZero/PosturaLuta.png", Texture.class));
         textures.put("SubZeroMove", assetManager.get("Personagens/SubZero/Andando.png", Texture.class));
         textures.put("BolaGelo", assetManager.get("Personagens/SubZero/Bola de Gelo.png", Texture.class));
 
-        // Obter os sons carregados
-        // musics.put("MusicMenu", assetManager.get("Sons/Vazio.mp3", Music.class));
+        //BarLife
+        textures.put("HealthBarBackground", assetManager.get("HealthBarBackground.png", Texture.class));
+        textures.put("HealthBarFill", assetManager.get("HealthBarFill.png", Texture.class));
+
+        textures.put("VictoryAnimation", assetManager.get("Personagens/Scorpion/VictoryAnimation.png", Texture.class));
+
+        // Obter os sons e músicas carregados
         musics.put("Music", assetManager.get("Sons/MusicaTema.mp3", Music.class));
         sounds.put("FireSound", assetManager.get("Sons/FireBall/FireBall.mp3", Sound.class));
 

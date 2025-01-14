@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -25,22 +26,25 @@ public class MortalKombat implements Screen {
     private SpriteBatch batch;
     private AssetControl assetControl;
 
+    private Animation<TextureRegion> victoryAnimation;
     // Scorpion
     private Animation<TextureRegion> scorpionIdleAnimation;
     private Animation<TextureRegion> scorpionMoveAnimation;
     private Animation<TextureRegion> fireballAnimation;
     private Animation<TextureRegion> SpecialAnimation;
-    private TextureRegion Life;
+    private float scorpionHealth = 100;  // Vida do Scorpion
 
     // SubZero (IA)
     private Animation<TextureRegion> subZeroIdleAnimation;
     private Animation<TextureRegion> subZeroMoveAnimation;
+    private float subZeroHealth = 100; // Vida do SubZero
 
     private TextureRegion currentFrame;
     private TextureRegion currentFireballFrame;
     private TextureRegion background;
     private TextureRegion currentSubZeroFrame;
 
+    private BitmapFont font;
     private float specialAnimationStateTime = 0; // Tempo de execução da animação especial
     private boolean isSpecialAnimationActive = false;
     private boolean fireballLaunched = false; // Flag para garantir que o Fireball só seja lançado após a animação
@@ -50,11 +54,15 @@ public class MortalKombat implements Screen {
     private boolean isMoving, isFireballActive;
 
     private float subZeroX = 150, subZeroY = 25; // Posição inicial da IA
-    private float iaSpeed = 1.5f;
+    private float iaSpeed = 2f;
 
     private Music backgroundMusic;
 
     private Stage stage;
+    private float timer = 300; // Timer de 300 segundos
+
+    
+    private boolean isVictoryAnimationActive = false;
 
     public MortalKombat(ObjetoMenu game) {
         this.game = game;
@@ -69,21 +77,22 @@ public class MortalKombat implements Screen {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        font = new BitmapFont();
         backgroundMusic = AssetControl.getMusic("Music");
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.5f);
         backgroundMusic.play();
 
         background = new TextureRegion(AssetControl.getTexture("Arena"));
+        
+        TextureRegion[][] victoryFrames = AssetControl.getTextureRegions("VictoryAnimation", new Vector2(100, 200));
+        victoryAnimation = AssetControl.getAnimation(victoryFrames, 0, 0.1f);
 
         // Scorpion
         TextureRegion[][] scorpionIdleFrames = AssetControl.getTextureRegions("ScorpionIdle", new Vector2(88, 175));
         TextureRegion[][] scorpionMoveFrames = AssetControl.getTextureRegions("ScorpionMove", new Vector2(110, 175));
         scorpionIdleAnimation = AssetControl.getAnimation(scorpionIdleFrames, 0, 0.1f);
         scorpionMoveAnimation = AssetControl.getAnimation(scorpionMoveFrames, 0, 0.1f);
-
-        TextureRegion[][] BarLife = AssetControl.getTextureRegions("BarLife", new Vector2(35, 35));
-        Life = AssetControl.getTextureRegions(BarLife, 0);
 
         TextureRegion[][] fireballFrames = AssetControl.getTextureRegions("BolaFogo", new Vector2(35, 35));
         fireballAnimation = AssetControl.getAnimation(fireballFrames, 0, 0.1f);
@@ -136,6 +145,14 @@ public class MortalKombat implements Screen {
             batch.draw(currentFireballFrame, fireballX, fireballY);
         }
 
+        // Desenha as barras de vida
+        drawHealthBars();
+
+        if (isVictoryAnimationActive) {
+            batch.draw(victoryAnimation.getKeyFrame(specialAnimationStateTime, false), 350, 200);
+        }
+        
+
         batch.end();
 
         stage.act(delta);
@@ -146,7 +163,7 @@ public class MortalKombat implements Screen {
     private void update(float deltaTime) {
         handleInput();
         handleIA(deltaTime);
-    
+        checkWinner();
         // Se a animação especial estiver ativa, usamos o tempo dela para atualizar
         if (isSpecialAnimationActive) {
             specialAnimationStateTime += deltaTime;  // Incrementa o tempo da animação especial
@@ -171,6 +188,12 @@ public class MortalKombat implements Screen {
                 currentFrame = AssetControl.getCurrentTRegion(scorpionIdleAnimation);
             }
         }
+
+        // Verifica se a animação de vitória deve continuar
+        if (isVictoryAnimationActive) {
+            specialAnimationStateTime += deltaTime;
+        
+        }
     
         // Se o Fireball foi lançado, começamos a desenhá-lo
         if (isFireballActive) {
@@ -178,7 +201,14 @@ public class MortalKombat implements Screen {
     
             // Move o Fireball para a direita
             fireballX += 350 * deltaTime;  // Aumenta a posição em X
-    
+            
+            // Verifica a colisão com o SubZero
+        if (isColliding(fireballX, fireballY, 35, 35, subZeroX, subZeroY, 88, 175)) {
+            // Diminui a saúde do SubZero em 10 pontos
+            subZeroHealth -= 10;
+            resetFireball(); // Reset Fireball após a colisão
+        }
+
             // Se a bola de fogo saiu da tela, reinicia o estado
             if (fireballX > Gdx.graphics.getWidth()) {
                 resetFireball();
@@ -186,6 +216,42 @@ public class MortalKombat implements Screen {
         }
     
         assetControl.update(deltaTime);
+
+        // Atualiza o timer e verifica se o tempo acabou
+        timer -= deltaTime;
+        if (timer <= 0) {
+            checkWinner();
+        }
+    }
+
+    private void drawHealthBars() {
+        // Desenha a barra de vida do Scorpion no canto superior esquerdo
+        batch.setColor(1, 0, 0, 1);
+        batch.draw(new TextureRegion(AssetControl.getTexture("HealthBarBackground")), 5, Gdx.graphics.getHeight() - 50, 350 * (scorpionHealth / 100), 35);
+        batch.setColor(0, 1, 0, 1);
+        batch.draw(new TextureRegion(AssetControl.getTexture("HealthBarFill")), 5, Gdx.graphics.getHeight() - 50, 350 * (scorpionHealth / 100), 35);
+
+        // Desenha a barra de vida do SubZero no canto superior direito
+        batch.setColor(1, 0, 0, 1);
+        batch.draw(new TextureRegion(AssetControl.getTexture("HealthBarBackground")), Gdx.graphics.getWidth() - 355, Gdx.graphics.getHeight() - 50, 350 * (subZeroHealth / 100), 35);
+        batch.setColor(0, 1, 0, 1);
+        batch.draw(new TextureRegion(AssetControl.getTexture("HealthBarFill")), Gdx.graphics.getWidth() - 355, Gdx.graphics.getHeight() - 50, 350 * (subZeroHealth / 100), 35);
+
+        // Desenha o timer no meio das barras
+        batch.setColor(1, 1, 1, 1);
+        font.draw(batch, "Time: " + (int) timer, Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() - 20);
+    }
+
+    private void checkWinner() {
+        if (scorpionHealth <= 0) {
+            // SubZero vence
+            isVictoryAnimationActive = true;
+            specialAnimationStateTime = 0;
+        } else if (subZeroHealth <= 0) {
+            // Scorpion vence
+            isVictoryAnimationActive = true;
+            specialAnimationStateTime = 0;
+        }
     }
 
     private void activateFireballProjectile() {
@@ -312,6 +378,7 @@ public class MortalKombat implements Screen {
         assetControl.dispose();
         backgroundMusic.dispose();
         stage.dispose();
+        font.dispose(); 
     }
 
     public enum IAState {
