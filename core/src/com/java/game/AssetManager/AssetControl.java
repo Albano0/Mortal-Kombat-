@@ -41,6 +41,8 @@ public class AssetControl {
         assetManager.load("Personagens/SubZero/PosturaLuta.png", Texture.class);
         assetManager.load("Personagens/SubZero/Andando.png", Texture.class);
         assetManager.load("Personagens/SubZero/Bola de Gelo.png", Texture.class);
+        assetManager.load("Personagens/SubZero/Soco.png", Texture.class);
+
 
         //BarLife
         assetManager.load("HealthBarBackground.png", Texture.class);
@@ -68,7 +70,7 @@ public class AssetControl {
         // Assets do SubZero
         textures.put("SubZeroIdle", assetManager.get("Personagens/SubZero/PosturaLuta.png", Texture.class));
         textures.put("SubZeroMove", assetManager.get("Personagens/SubZero/Andando.png", Texture.class));
-        textures.put("BolaGelo", assetManager.get("Personagens/SubZero/Bola de Gelo.png", Texture.class));
+        textures.put("Soco", assetManager.get("Personagens/SubZero/Soco.png", Texture.class));
 
         //BarLife
         textures.put("HealthBarBackground", assetManager.get("HealthBarBackground.png", Texture.class));

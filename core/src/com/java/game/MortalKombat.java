@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.java.game.AssetManager.AssetControl;
+import com.java.game.DAO.ScoreDAO;
 import com.java.game.Menu.ConfiguracoesMenu;
 import com.java.game.Menu.ObjetoMenu;
 
@@ -25,6 +26,9 @@ public class MortalKombat implements Screen {
     private final ObjetoMenu game;
     private SpriteBatch batch;
     private AssetControl assetControl;
+    
+    private ScoreDAO scoreDAO;
+    private int score;
 
     private Animation<TextureRegion> victoryAnimation;
     // Scorpion
@@ -66,6 +70,8 @@ public class MortalKombat implements Screen {
 
     public MortalKombat(ObjetoMenu game) {
         this.game = game;
+        this.scoreDAO = new ScoreDAO(); // Inicializa o ScoreDAO
+        this.score = 0; // Inicializa a pontuação
     }
 
     @Override
@@ -206,6 +212,9 @@ public class MortalKombat implements Screen {
         if (isColliding(fireballX, fireballY, 35, 35, subZeroX, subZeroY, 88, 175)) {
             // Diminui a saúde do SubZero em 10 pontos
             subZeroHealth -= 10;
+
+            score += 10;
+            scoreDAO.addScore(score);
             resetFireball(); // Reset Fireball após a colisão
         }
 
