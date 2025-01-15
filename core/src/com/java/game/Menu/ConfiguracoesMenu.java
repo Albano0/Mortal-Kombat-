@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.java.game.MortalKombat;
 import com.badlogic.gdx.audio.Sound;
 
 public class ConfiguracoesMenu implements Screen {

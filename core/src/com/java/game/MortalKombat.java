@@ -59,7 +59,7 @@ public class MortalKombat implements Screen {
     private Music backgroundMusic;
 
     private Stage stage;
-    private float timer = 300; // Timer de 300 segundos
+    private float timer = 99; // Timer de 300 segundos
 
     
     private boolean isVictoryAnimationActive = false;
