@@ -76,21 +76,10 @@ public class MenuManager implements Screen {
             }
         });
 
-        // Botão Configurações
-        ImageButton configButton = new ImageButton(configStyle);
-        configButton.setSize(50, 50);
-        configButton.setPosition(740, 400);
-        configButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new ConfiguracoesMenu(game, MenuManager.this)); // Passa a instância atual
-            }
-        });
 
         // Adiciona os botões ao Stage
         stage.addActor(playButton);
         stage.addActor(exitButton);
-        stage.addActor(configButton);
     }
 
     @Override
